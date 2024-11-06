@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        shell: msys2 {0}
+        shell: bash  # Explicitly using bash instead of msys2 shell
     steps:
     - name: Checkout termbox2 Repository
       uses: actions/checkout@v3
@@ -23,7 +23,6 @@ jobs:
 
     - name: Install additional dependencies via pacman
       run: |
-        # Launch MSYS2 shell and install any missing dependencies
         pacman -Sy --noconfirm pkg-config
 
     - name: Build termbox2 Static Library
