@@ -11,7 +11,7 @@ jobs:
     
     strategy:
       matrix:
-        os: [ubuntu-20.04, macos-latest]
+        os: [ubuntu-20.04, macos-latest, windows-latest]
         architecture: [x64]
 
     steps:
@@ -20,21 +20,24 @@ jobs:
 
       - name: Set up dependencies for ${{ matrix.os }}
         run: |
-          if [[ "${{ matrix.os }}" == "ubuntu-20.04" ]]; then
+          if [ "${{ matrix.os }}" == "ubuntu-20.04" ]; then
             sudo apt-get update
-            sudo apt-get install -y build-essential clang
-          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
-            brew install gcc
+            sudo apt-get install -y build-essential clang make
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            brew install gcc make
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            choco install mingw make
           fi
 
       - name: Run make to build the static library
         run: |
-          # For Ubuntu Linux
-          if [[ "${{ matrix.os }}" == "ubuntu-20.04" ]]; then
+          if [ "${{ matrix.os }}" == "ubuntu-20.04" ]; then
             make lib termbox2.h.lib CC=clang
-          # For macOS
-          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             make lib termbox2.h.lib CC=gcc
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            # For Windows with MinGW
+            make lib termbox2.h.lib CC=x86_64-w64-mingw32-gcc
           fi
 
       - name: Upload Build Artifacts
