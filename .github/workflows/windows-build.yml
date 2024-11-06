@@ -37,3 +37,9 @@ jobs:
     - name: '🚧 Build TOOL'
       run: |
         make lib termbox2.h.lib
+
+    - name: Upload Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: termbox2-build-mingw64
+        path: libtermbox2.a
