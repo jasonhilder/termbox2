@@ -3,7 +3,7 @@ name: Build Termbox2 for macOS, Windows, and Linux
 on:
   push:
     branches:
-      - master
+      - main__
 
 jobs:
   build:

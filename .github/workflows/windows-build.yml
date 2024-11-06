@@ -19,13 +19,15 @@ jobs:
         update: true
         install-packages: 'make mingw-w64-x86_64-toolchain'
 
+    - name: Install additional dependencies via pacman
+      run: |
+        # Launch MSYS2 shell and install any missing dependencies
+        msys2_shell.bat -c "pacman -Sy --noconfirm pkg-config"
+
     - name: Build termbox2 Static Library
       run: |
-        # Install necessary dependencies, if any
-        pacman -Sy --noconfirm pkg-config
-
-        # Run the build command to create the static library
-        make lib termbox2.h.lib
+        # Run build command in MSYS2 shell to create the static library
+        msys2_shell.bat -c "make lib termbox2.h.lib"
 
     - name: Archive Static Library
       uses: actions/upload-artifact@v3
