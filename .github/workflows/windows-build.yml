@@ -13,7 +13,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { icon: '⬛', sys: mingw32 }
           - { icon: '🟦', sys: mingw64 }
     name: 🚧${{ matrix.icon }} ${{ matrix.sys }}
     defaults:
@@ -32,7 +31,7 @@ jobs:
         msystem: ${{matrix.sys}}
         update: true
         install: >-
-          git
+          gcc
           make
 
     - name: '🚧 Build TOOL'
