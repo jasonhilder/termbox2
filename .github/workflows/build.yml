@@ -1,0 +1,49 @@
+name: Build Termbox2 for macOS, Windows, and Linux
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    
+    strategy:
+      matrix:
+        os: [ubuntu-20.04, macos-latest, windows-latest]
+        architecture: [x64]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up dependencies for ${{ matrix.os }}
+        run: |
+          if [[ "${{ matrix.os }}" == "ubuntu-20.04" ]]; then
+            sudo apt-get update
+            sudo apt-get install -y build-essential clang
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            brew install gcc
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            choco install mingw
+          fi
+
+      - name: Run make to build the static library
+        run: |
+          # For Ubuntu Linux
+          if [[ "${{ matrix.os }}" == "ubuntu-20.04" ]]; then
+            make lib termbox2.h.lib CC=clang
+          # For macOS
+          elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
+            make lib termbox2.h.lib CC=gcc
+          # For Windows using MinGW
+          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
+            make lib termbox2.h.lib CC=x86_64-w64-mingw32-gcc
+          fi
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: termbox2-build-${{ matrix.os }}
+          path: libtermbox2.a
