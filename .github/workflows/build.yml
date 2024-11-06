@@ -26,7 +26,12 @@ jobs:
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             brew install gcc make
           elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            choco install mingw make
+            # Install MSYS2 on Windows
+            choco install msys2
+            refreshenv
+            # Install the necessary build tools within MSYS2
+            pacman -Syu --noconfirm
+            pacman -S --noconfirm base-devel mingw-w64-x86_64-gcc
           fi
         shell: bash
 
@@ -37,8 +42,8 @@ jobs:
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             make lib termbox2.h.lib CC=gcc
           elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            # For Windows with MinGW
-            make lib termbox2.h.lib CC=x86_64-w64-mingw32-gcc
+            # Run make inside MSYS2 using MSYS2's bash shell
+            msys2_shell.cmd -mingw64 -c "make lib termbox2.h.lib CC=x86_64-w64-mingw32-gcc"
           fi
         shell: bash
 
