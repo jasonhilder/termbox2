@@ -3,10 +3,7 @@ name: Build termbox2 Static Library
 on:
   push:
     branches:
-      - main
-  pull_request:
-    branches:
-      - main
+      - master
 
 jobs:
   build:
