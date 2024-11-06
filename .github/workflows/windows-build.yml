@@ -1,0 +1,43 @@
+name: Build Termbox2 on Windows
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      # Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Set up MSYS2 using the msys2/setup-msys2 action
+      - name: Set up MSYS2
+        uses: msys2/setup-msys2@v2
+        with:
+          msys2-version: 'latest'
+
+      # Install the necessary build dependencies
+      - name: Install dependencies
+        run: |
+          pacman -Sy --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-make
+
+      # Clone and build Termbox2
+      - name: Build Termbox2
+        run: |
+          # Clone Termbox2 repository
+          git clone https://github.com/nsf/termbox2.git
+          cd termbox2
+          # Create a build directory and build Termbox2 as a static library
+          mkdir build && cd build
+          make lib termbox2.h.lib CC=x86_64-w64-mingw32-gcc
+
+      # Upload the built static library as an artifact
+      - name: Upload the static library
+        uses: actions/upload-artifact@v3
+        with:
+          name: termbox2-build-windows
+          path: termbox2/build/libtermbox2.a

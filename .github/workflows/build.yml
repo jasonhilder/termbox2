@@ -25,15 +25,6 @@ jobs:
             sudo apt-get install -y build-essential clang make
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             brew install gcc make
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            # Install MSYS2 on Windows using Chocolatey
-            choco install msys2 --yes
-            # Ensure MSYS2 is in the PATH for the current shell session
-            echo "C:\\tools\\msys64\\usr\\bin" >> $GITHUB_PATH
-            # Now that MSYS2 is installed, we need to refresh the environment
-            # Run pacman to install necessary build tools inside MSYS2
-            msys2_shell.cmd -mingw64 -c "pacman -Syu --noconfirm"
-            msys2_shell.cmd -mingw64 -c "pacman -S --noconfirm base-devel mingw-w64-x86_64-gcc"
           fi
         shell: bash
 
@@ -43,9 +34,6 @@ jobs:
             make lib termbox2.h.lib CC=clang
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             make lib termbox2.h.lib CC=gcc
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            # Run make inside MSYS2 using MSYS2's bash shell
-            msys2_shell.cmd -mingw64 -c "make lib termbox2.h.lib CC=x86_64-w64-mingw32-gcc"
           fi
         shell: bash
 
