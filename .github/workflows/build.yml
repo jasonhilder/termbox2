@@ -43,7 +43,7 @@ jobs:
           fi
 
       - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: termbox2-build-${{ matrix.os }}
           path: libtermbox2.a
