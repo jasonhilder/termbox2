@@ -23,12 +23,10 @@ jobs:
 
     - name: Install additional dependencies via pacman
       run: |
-        # Launch MSYS2 shell to install pkg-config
         msys2 -c "pacman -Sy --noconfirm pkg-config"
 
     - name: Build termbox2 Static Library
       run: |
-        # Run the MSYS2 shell (bash) to invoke make within the MSYS2 environment
         msys2 -c "make lib termbox2.h.lib"
 
     - name: Archive Static Library
