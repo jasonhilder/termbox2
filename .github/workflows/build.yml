@@ -28,8 +28,10 @@ jobs:
           elif [ "${{ matrix.os }}" == "windows-latest" ]; then
             # Install MSYS2 on Windows using Chocolatey
             choco install msys2 --yes
-            # Now that MSYS2 is installed, we need to refresh the environment by launching the MSYS2 shell
-            # Run pacman to install necessary build tools
+            # Ensure MSYS2 is in the PATH for the current shell session
+            echo "C:\\tools\\msys64\\usr\\bin" >> $GITHUB_PATH
+            # Now that MSYS2 is installed, we need to refresh the environment
+            # Run pacman to install necessary build tools inside MSYS2
             msys2_shell.cmd -mingw64 -c "pacman -Syu --noconfirm"
             msys2_shell.cmd -mingw64 -c "pacman -S --noconfirm base-devel mingw-w64-x86_64-gcc"
           fi
