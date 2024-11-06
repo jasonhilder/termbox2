@@ -37,10 +37,6 @@ jobs:
           # For macOS
           elif [[ "${{ matrix.os }}" == "macos-latest" ]]; then
             make lib termbox2.h.lib CC=gcc
-          # For Windows using MinGW
-          elif [[ "${{ matrix.os }}" == "windows-latest" ]]; then
-            make lib termbox2.h.lib CC=x86_64-w64-mingw32-gcc
-          fi
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
