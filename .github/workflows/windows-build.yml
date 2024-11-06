@@ -10,7 +10,7 @@ jobs:
     runs-on: windows-latest
     defaults:
       run:
-        shell: cmd  # Use cmd shell, as requested
+        shell: cmd  
     steps:
     - name: Checkout termbox2 Repository
       uses: actions/checkout@v3
@@ -27,7 +27,7 @@ jobs:
 
     - name: Build termbox2 Static Library
       run: |
-        msys2 -c "make lib termbox2.h.lib"
+        msys2 -c "C:/msys64/mingw64/bin/bash --login -c 'make lib termbox2.h.lib'"
 
     - name: Archive Static Library
       uses: actions/upload-artifact@v3
