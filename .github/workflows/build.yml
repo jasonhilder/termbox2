@@ -26,12 +26,12 @@ jobs:
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             brew install gcc make
           elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            # Install MSYS2 on Windows
-            choco install msys2
-            refreshenv
-            # Install the necessary build tools within MSYS2
-            pacman -Syu --noconfirm
-            pacman -S --noconfirm base-devel mingw-w64-x86_64-gcc
+            # Install MSYS2 on Windows using Chocolatey
+            choco install msys2 --yes
+            # Now that MSYS2 is installed, we need to refresh the environment by launching the MSYS2 shell
+            # Run pacman to install necessary build tools
+            msys2_shell.cmd -mingw64 -c "pacman -Syu --noconfirm"
+            msys2_shell.cmd -mingw64 -c "pacman -S --noconfirm base-devel mingw-w64-x86_64-gcc"
           fi
         shell: bash
 
